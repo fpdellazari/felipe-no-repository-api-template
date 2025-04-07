@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FelipeNoRepositoryApiTemplate.Application.Validators;
 
-public class UpdateCustomerValidator : AbstractValidator<UpdateCustomerDTO>
+public class CreateUpdateCustomerValidator : AbstractValidator<CreateUpdateCustomerDTO>
 {
-    public UpdateCustomerValidator()
+    public CreateUpdateCustomerValidator()
     {
         RuleFor(customer => customer.Name)
             .NotEmpty().WithMessage("O nome é obrigatório.")

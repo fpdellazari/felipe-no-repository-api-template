@@ -40,7 +40,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerDTO createCustomer, [FromServices] IValidator<CreateCustomerDTO> validator)
+    public async Task<IActionResult> CreateCustomer([FromBody] CreateUpdateCustomerDTO createCustomer, [FromServices] IValidator<CreateUpdateCustomerDTO> validator)
     {
         var validationResult = await validator.ValidateAsync(createCustomer);
 
@@ -53,7 +53,7 @@ public class CustomerController : ControllerBase
 
     [HttpPut]
     [Route("{id:guid}")]
-    public async Task<IActionResult> UpdateCustomer(Guid id, [FromBody] UpdateCustomerDTO updateCustomer, [FromServices] IValidator<UpdateCustomerDTO> validator)
+    public async Task<IActionResult> UpdateCustomer(Guid id, [FromBody] CreateUpdateCustomerDTO updateCustomer, [FromServices] IValidator<CreateUpdateCustomerDTO> validator)
     {
         var validationResult = await validator.ValidateAsync(updateCustomer);
 

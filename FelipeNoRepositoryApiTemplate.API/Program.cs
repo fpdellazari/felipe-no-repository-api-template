@@ -27,8 +27,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 // Validadores com Fluent Validation
-builder.Services.AddScoped<IValidator<CreateCustomerDTO>, CreateCustomerValidator>();
-builder.Services.AddScoped<IValidator<UpdateCustomerDTO>, UpdateCustomerValidator>();
+builder.Services.AddScoped<IValidator<CreateUpdateCustomerDTO>, CreateUpdateCustomerValidator>();
 
 var app = builder.Build();
 

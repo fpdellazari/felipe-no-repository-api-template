@@ -17,7 +17,7 @@ public class CustomerService : ICustomerService
         _mapper = mapper;        
     }
 
-    public async Task<CustomerDTO> CreateAsync(CreateCustomerDTO createCustomer)
+    public async Task<CustomerDTO> CreateAsync(CreateUpdateCustomerDTO createCustomer)
     {
         var customer = new Customer()
         {
@@ -60,7 +60,7 @@ public class CustomerService : ICustomerService
         return _mapper.Map<CustomerDTO>(customer);
     }
 
-    public async Task<CustomerDTO> UpdateAsync(Guid id, UpdateCustomerDTO updateCustomer)
+    public async Task<CustomerDTO> UpdateAsync(Guid id, CreateUpdateCustomerDTO updateCustomer)
     {
         var customer = await _dbContext.Customers.FindAsync(id);
 
