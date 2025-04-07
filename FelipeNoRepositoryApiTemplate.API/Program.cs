@@ -1,6 +1,5 @@
 using FluentValidation;
 using FelipeNoRepositoryApiTemplate.Application.Data;
-using FelipeNoRepositoryApiTemplate.Application.Mapper;
 using FelipeNoRepositoryApiTemplate.Application.Services;
 using FelipeNoRepositoryApiTemplate.Application.Validators;
 using FelipeNoRepositoryApiTemplate.Domain.Models.DTOs;
@@ -19,9 +18,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
     options.UseSqlite(connectionString);
 });
-
-// AutoMapper
-builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Services
 builder.Services.AddScoped<ICustomerService, CustomerService>();

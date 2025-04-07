@@ -1,7 +1,6 @@
-﻿using AutoMapper;
-using FelipeNoRepositoryApiTemplate.Application.Data;
+﻿using FelipeNoRepositoryApiTemplate.Application.Data;
+using FelipeNoRepositoryApiTemplate.Application.Mappers;
 using FelipeNoRepositoryApiTemplate.Domain.Models.DTOs;
-using FelipeNoRepositoryApiTemplate.Domain.Models.Entities;
 using FelipeNoRepositoryApiTemplate.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,26 +9,20 @@ namespace FelipeNoRepositoryApiTemplate.Application.Services;
 public class CustomerService : ICustomerService
 {
     private readonly ApplicationDbContext _dbContext;
-    private readonly IMapper _mapper;
-    public CustomerService(ApplicationDbContext dbContext, IMapper mapper)
+
+    public CustomerService(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
-        _mapper = mapper;        
     }
 
-    public async Task<CustomerDTO> CreateAsync(CreateUpdateCustomerDTO createCustomer)
+    public async Task<CustomerDTO> CreateAsync(CreateUpdateCustomerDTO createUpdateCustomer)
     {
-        var customer = new Customer()
-        {
-            Name = createCustomer.Name,
-            Age = createCustomer.Age,
-            Email = createCustomer.Email
-        };
-
+        var customer = createUpdateCustomer.MapToCustomer();
+    
         await _dbContext.Customers.AddAsync(customer);
         await _dbContext.SaveChangesAsync();
 
-        return _mapper.Map<CustomerDTO>(customer);
+        return customer.MapToDTO();
     }
 
     public async Task<CustomerDTO> DeleteAsync(Guid id)
@@ -41,14 +34,14 @@ public class CustomerService : ICustomerService
         _dbContext.Customers.Remove(customer);
         await _dbContext.SaveChangesAsync();
 
-        return _mapper.Map<CustomerDTO>(customer);
+        return customer.MapToDTO();
     }
 
     public async Task<IEnumerable<CustomerDTO>> GetAsync()
     {
         var customers = await _dbContext.Customers.AsNoTracking().ToListAsync();
 
-        return _mapper.Map<List<CustomerDTO>>(customers); ;
+        return customers.MapToDTOList();
     }
 
     public async Task<CustomerDTO> GetByIdAsync(Guid id)
@@ -57,22 +50,22 @@ public class CustomerService : ICustomerService
 
         if (customer is null) throw new KeyNotFoundException("Cliente não encontrado.");
 
-        return _mapper.Map<CustomerDTO>(customer);
+        return customer.MapToDTO();
     }
 
-    public async Task<CustomerDTO> UpdateAsync(Guid id, CreateUpdateCustomerDTO updateCustomer)
+    public async Task<CustomerDTO> UpdateAsync(Guid id, CreateUpdateCustomerDTO createUpdateCustomer)
     {
         var customer = await _dbContext.Customers.FindAsync(id);
 
         if (customer is null) throw new KeyNotFoundException("Cliente não encontrado.");
 
-        customer.Name = updateCustomer.Name;
-        customer.Age = updateCustomer.Age;
-        customer.Email = updateCustomer.Email;
+        customer.Name = createUpdateCustomer.Name;
+        customer.Age = createUpdateCustomer.Age;
+        customer.Email = createUpdateCustomer.Email;
 
         await _dbContext.SaveChangesAsync();
 
-        return _mapper.Map<CustomerDTO>(customer);
+        return customer.MapToDTO();
     }
 }
 
